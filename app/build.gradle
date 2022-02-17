@@ -19,7 +19,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    ndkVersion "23.1.7779620"
+    ndkVersion "23.0.7123448"
 
     buildTypes {
         release {
