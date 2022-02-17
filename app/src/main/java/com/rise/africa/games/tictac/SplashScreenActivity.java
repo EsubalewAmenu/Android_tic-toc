@@ -1,4 +1,4 @@
-package com.example.tictactoe;
+package com.rise.africa.games.tictac;
 
 import android.content.Intent;
 import android.os.Bundle;

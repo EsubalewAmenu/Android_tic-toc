@@ -1,4 +1,4 @@
-package com.example.tictactoe;
+package com.rise.africa.games.tictac;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.tictactoe", appContext.getPackageName());
+        assertEquals("com.rise.africa.games.tictac", appContext.getPackageName());
     }
 }
