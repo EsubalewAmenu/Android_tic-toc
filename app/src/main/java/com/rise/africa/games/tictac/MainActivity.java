@@ -38,6 +38,15 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.os.CountDownTimer;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String EXTRA_PLAYER_1_SYMBOL = "Player1Symbol";
@@ -64,8 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textViewPlayer1;
     private TextView textViewPlayer2;
-    private TextView timerView;
-    //   private Chronometer timerr;
+
     private Animation flip, clear;
     private PopupWindow mPopupWindow;
     private Button addPlayer1Name, addPlayer2Name, okButton;
@@ -85,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
     private String player1Colour = "#79CADC";   //lighter blue
     private String player2Colour = "#3A98D4"; //darker blue
 
-
+    private AdView mAdViewBottom, mAdViewTop;
+    private InterstitialAd mInterstitialAd;
+    int interstitialCounter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,9 +122,6 @@ public class MainActivity extends AppCompatActivity {
         addPlayer2Name = findViewById(R.id.addPlayer2Name);
        // updatePointsText();
 
-        //   timerr = findViewById(R.id.timerID);
-        timerView = findViewById(R.id.timerID);
-
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 String buttonID = "button_" + i + j;
@@ -138,6 +145,22 @@ public class MainActivity extends AppCompatActivity {
         soundPool = new SoundPool(2, AudioManager.STREAM_MUSIC, 0);
         victoryStreamId = soundPool.load(this, R.raw.victory, 0);
         drawStreamId = soundPool.load(this, R.raw.draw, 0);
+
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdViewBottom = findViewById(R.id.adViewBottom);
+        AdRequest adRequestBot = new AdRequest.Builder().build();
+        mAdViewBottom.loadAd(adRequestBot);
+
+        mAdViewTop = findViewById(R.id.adViewTop);
+        AdRequest adRequestTop = new AdRequest.Builder().build();
+        mAdViewTop.loadAd(adRequestTop);
+
 
     }
 
@@ -240,8 +263,12 @@ public class MainActivity extends AppCompatActivity {
 
             } else {
                 player2Wins();
-
             }
+
+            interstitialCounter++;
+            if(interstitialCounter%3==0)
+                showInterstitialAd();
+
         } else if (roundCount == 9) {
             draw();
 
@@ -251,6 +278,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void showInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this, getString(R.string.adunit_interstitial), adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+//                        Log.i(TAG, "onAdLoaded");
+                        if (mInterstitialAd != null) {
+                            mInterstitialAd.show(MainActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+//                        Log.i(TAG, loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+
+    }
     private void resetGame() {
         player1Points = 0;
         player2Points = 0;

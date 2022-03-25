@@ -4,4 +4,16 @@
     <string name="action_settings">Settings</string>
     <string name="action_exit">Exit</string>
     <string name="title_activity_settings">Settings</string>
+
+
+    <string name="adunit_top">ca-app-pub-9052706595490706/8962287037</string>
+    <string name="adunit_bottom">ca-app-pub-9052706595490706/6336123692</string>
+    <string name="adunit_interstitial">ca-app-pub-9052706595490706/8770715343</string>
+    <string name="ad_app_id">ca-app-pub-9052706595490706~9153858725</string>
+
+<!--    <string name="adunit_top">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    <string name="adunit_bottom">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    <string name="adunit_interstitial">ca-app-pub-3940256099942544/1033173712</string>-->
+<!--    <string name="ad_app_id">ca-app-pub-3940256099942544~3347511713</string>-->
+
 </resources>
